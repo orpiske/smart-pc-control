@@ -48,5 +48,8 @@ cd build
 %postun -p /sbin/ldconfig
 
 %changelog
+* Sun Nov 03 2019 Otavio R. Piske <angusyoung@gmail.com> - 0.0.1-2
+- Fixes
+
 * Sun Nov 03 2019 Otavio R. Piske <angusyoung@gmail.com> - 0.0.1-1
 - Initial release

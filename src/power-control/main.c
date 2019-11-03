@@ -29,8 +29,7 @@ static void show_help(char **argv) {
 
 static reply_t *power_control_callback(const char *topic, const void *payload, int len, gru_status_t *status) {
     logger_t logger = gru_logger_get();
-    reply_t *reply = gru_alloc(sizeof(reply_t), status);
-    gru_alloc_check(reply, NULL);
+    reply_t *reply = NULL;
 
     logger(GRU_INFO, "Received %d bytes of data on the topic %s: %s", len, topic, payload);
 
@@ -47,6 +46,16 @@ static reply_t *power_control_callback(const char *topic, const void *payload, i
     switch (sret) {
         case 0: {
             logger(GRU_INFO, "Executed successfully");
+
+            reply = gru_alloc(sizeof(reply_t), status);
+            gru_alloc_check(reply, NULL);
+
+            if (!options.stateless) {
+                reply->payload = strdup((char *) payload);
+                reply->len = len;
+                reply->topic = strdup("pc/nuc/status/on");
+            }
+
             break;
         }
         case -1: {
@@ -62,10 +71,6 @@ static reply_t *power_control_callback(const char *topic, const void *payload, i
             break;
         }
     }
-
-    reply->payload = strdup((char *) payload);
-    reply->len = len;
-    reply->topic = strdup("pc/nuc/status/on");
 
     gru_dealloc_string(&command);
 
