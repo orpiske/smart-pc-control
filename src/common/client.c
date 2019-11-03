@@ -47,7 +47,7 @@ gru_status_t smart_client_subscribe(const char *topic) {
     return status;
 }
 
-gru_status_t smart_client_receive() {
+gru_status_t smart_client_receive(smart_client_callback_fn callback) {
     char *received_topic;
     int received_topic_len;
 
@@ -66,7 +66,10 @@ gru_status_t smart_client_receive() {
                     logger(GRU_INFO, "No data");
                 }
                 else {
-                    logger(GRU_INFO, "Received data on the topic %s: %s", received_topic, msg->payload);
+                    status = callback(received_topic, msg->payload, msg->payloadlen);
+                    if (!gru_status_success(&status)) {
+                        logger(GRU_WARNING, "The callback function did not complete successfully");
+                    }
                 }
 
                 break;

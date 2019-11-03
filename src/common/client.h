@@ -19,9 +19,13 @@ typedef struct mqtt_conn_t_ {
     MQTTClient client;
 } mqtt_conn_t;
 
+typedef gru_status_t (*smart_client_callback_fn)(const char *topic, const void *payload, int len);
+
 gru_export gru_status_t smart_client_connect(char *connect_url);
 gru_export gru_status_t smart_client_subscribe(const char *topic);
-gru_export gru_status_t smart_client_receive();
+gru_export gru_status_t smart_client_receive(smart_client_callback_fn callback);
+
+
 
 
 #endif //SMART_PC_CONTROL_CLIENT_H
