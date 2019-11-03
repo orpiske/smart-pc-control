@@ -87,11 +87,24 @@ static int run() {
         return EXIT_FAILURE;
     }
 
-    status = smart_client_connect(options.uri, options.id);
-    if (!gru_status_success(&status)) {
-        logger(GRU_FATAL, "Failed to connect to MQTT broker: %s", status.message);
-        return EXIT_FAILURE;
+    int retry = 10;
+    while (retry > 0) {
+        status = smart_client_connect(options.uri, options.id);
+        if (!gru_status_success(&status)) {
+            logger(GRU_FATAL, "Failed to connect to MQTT broker: %s", status.message);
+            retry--;
+
+            if (retry == 0) {
+                return EXIT_FAILURE;
+            }
+            sleep(5);
+        }
+        else {
+            break;
+        }
     }
+
+
 
     status = smart_client_subscribe("pc/nuc/state/on");
     if (!gru_status_success(&status)) {
