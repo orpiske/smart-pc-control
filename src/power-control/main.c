@@ -89,16 +89,23 @@ static int run() {
 
     status = smart_client_subscribe("pc/nuc/state/on");
     if (!gru_status_success(&status)) {
-        logger_t logger = gru_logger_get();
-
         logger(GRU_FATAL, "Failed to subscribe to the topic: %s", status.message);
         return EXIT_FAILURE;
     }
 
+    reply_t reply = {
+            .topic = "pc/nuc/status/on",
+            .payload = "true",
+            .len = strlen("true")
+    };
+
+    status = smart_client_send(&reply);
+    if (!gru_status_success(&status)) {
+        logger(GRU_FATAL, "Failed to reset PC status: %s", status.message);
+    }
+
     status = smart_client_receive(power_control_callback, smart_client_send);
     if (!gru_status_success(&status)) {
-        logger_t logger = gru_logger_get();
-
         logger(GRU_FATAL, "Failed to receive data from MQTT broker: %s", status.message);
         return EXIT_FAILURE;
     }
