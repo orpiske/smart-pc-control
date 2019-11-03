@@ -30,4 +30,8 @@ link_libraries(${MATH_LIB}
 
 
 include_directories(src/ src/common)
-add_executable(smart_pc_control src/power-control/main.c src/power-control/main.h src/common/client.c src/common/client.h)
+add_executable(smart-pc-control-power src/power-control/main.c src/power-control/main.h src/common/client.c src/common/client.h)
+
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    AddService(src/power-control/config smart-pc-control-power)
+endif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")

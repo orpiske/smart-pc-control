@@ -1,0 +1,12 @@
+[Unit]
+Description=Smart PC Control - Power Daemon
+After=syslog.target network.target
+
+[Service]
+Type=forking
+EnvironmentFile=-/@CMAKE_INSTALL_SYSCONFIG_PATH@/smart-pc-control-power
+ExecStart=@CMAKE_INSTALL_PREFIX@/bin/smart-pc-control-power -b $MQTT_BROKER_URL
+PrivateTmp=false
+
+[Install]
+WantedBy=multi-user.target
