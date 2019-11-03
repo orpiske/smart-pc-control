@@ -1,4 +1,5 @@
 #include "main.h"
+#include "../common/client.h"
 
 typedef struct options_t_ {
     char *uri;
@@ -24,12 +25,19 @@ static void show_help(char **argv) {
                         "runs in the given verbose (info, stat, debug, etc) level mode");
 }
 
-static gru_status_t power_control_callback(const char *topic, const void *payload, int len) {
+static reply_t *power_control_callback(const char *topic, const void *payload, int len, gru_status_t *status) {
     logger_t logger = gru_logger_get();
-    gru_status_t status = gru_status_new();
+    reply_t *reply = gru_alloc(sizeof(reply_t), status);
+    gru_alloc_check(reply, NULL);
+
+    char *state = (char *) payload;
 
     logger(GRU_INFO, "Received %d bytes of data on the topic %s: %s", len, topic, payload);
-    return status;
+    reply->payload = strdup(state);
+    reply->len = len;
+    reply->topic = strdup("pc/nuc/status/on");
+
+    return reply;
 }
 
 int main(int argc, char **argv) {
@@ -89,7 +97,7 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    status = smart_client_receive(power_control_callback);
+    status = smart_client_receive(power_control_callback, smart_client_send);
     if (!gru_status_success(&status)) {
         logger_t logger = gru_logger_get();
 

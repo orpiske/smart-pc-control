@@ -47,7 +47,7 @@ gru_status_t smart_client_subscribe(const char *topic) {
     return status;
 }
 
-gru_status_t smart_client_receive(smart_client_callback_fn callback) {
+gru_status_t smart_client_receive(smart_client_receive_fn receive_callback, smart_client_send_fn reply_callback) {
     char *received_topic;
     int received_topic_len;
 
@@ -66,9 +66,12 @@ gru_status_t smart_client_receive(smart_client_callback_fn callback) {
                     logger(GRU_INFO, "No data");
                 }
                 else {
-                    status = callback(received_topic, msg->payload, msg->payloadlen);
+                    reply_t *reply = receive_callback(received_topic, msg->payload, msg->payloadlen, &status);
                     if (!gru_status_success(&status)) {
                         logger(GRU_WARNING, "The callback function did not complete successfully");
+                    }
+                    else {
+                        reply_callback(reply);
                     }
                 }
 
@@ -88,3 +91,48 @@ gru_status_t smart_client_receive(smart_client_callback_fn callback) {
     return status;
 }
 
+gru_status_t smart_client_send(reply_t *reply) {
+    MQTTClient_deliveryToken token;
+    MQTTClient_message pubmsg = MQTTClient_message_initializer;
+    gru_status_t status = gru_status_new();
+
+    int rc = 0;
+
+    pubmsg.payload = reply->payload;
+    pubmsg.payloadlen = reply->len;
+
+    if (unlikely(pubmsg.payloadlen > INT_MAX)) {
+        gru_status_set(&status,
+                       GRU_FAILURE,
+                       "Data to big to serialize on MQTT protocol: max %d / size: %ld",
+                       INT_MAX,
+                       pubmsg.payloadlen);
+
+        return status;
+    }
+
+    rc = MQTTClient_publishMessage(mqtt_conn.client, reply->topic, &pubmsg, &token);
+
+    switch (rc) {
+        case MQTTCLIENT_SUCCESS:
+            break;
+        default: {
+            gru_status_set(&status, GRU_FAILURE, "Unable to publish the message: error %d", rc);
+
+            return status;
+        }
+    }
+
+    rc = MQTTClient_waitForCompletion(mqtt_conn.client, token, 1000);
+    switch (rc) {
+        case MQTTCLIENT_SUCCESS:
+            break;
+        default: {
+            gru_status_set(&status, GRU_FAILURE, "Unable to synchronize: error %d", rc);
+
+            return status;
+        }
+    }
+
+    return status;
+}
