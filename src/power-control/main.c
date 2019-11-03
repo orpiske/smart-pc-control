@@ -4,6 +4,7 @@
 typedef struct options_t_ {
     char *uri;
     log_level_t log_level;
+    bool daemon;
 } options_t;
 
 static options_t options;
@@ -70,47 +71,7 @@ static reply_t *power_control_callback(const char *topic, const void *payload, i
     return reply;
 }
 
-int main(int argc, char **argv) {
-    int option_index = 0;
-
-    if (argc < 2) {
-        show_help(argv);
-
-        return EXIT_FAILURE;
-    }
-
-    gru_logger_set(gru_logger_default_printer);
-    gru_logger_set_minimum(GRU_INFO);
-
-    while (1) {
-
-        static struct option long_options[] = {
-                {"broker-url",     required_argument, 0, 'b'},
-                {"log-level",      required_argument, 0, 'l'},
-                {0,                0,                 0, 0}
-        };
-
-        int c = getopt_long(
-                argc, argv, "b:l:", long_options, &option_index);
-        if (c == -1) {
-            break;
-        }
-
-        switch (c) {
-            case 'b':
-                options.uri = optarg;
-                break;
-            case 'l':
-                options_set_log_level(optarg);
-                break;
-            default:
-                printf("Invalid or missing option\n");
-                show_help(argv);
-
-                return EXIT_FAILURE;
-        }
-    }
-
+static int run() {
     logger_t logger = gru_logger_get();
     gru_status_t status = gru_status_new();
 
@@ -143,4 +104,62 @@ int main(int argc, char **argv) {
     }
 
     return EXIT_SUCCESS;
+}
+
+int main(int argc, char **argv) {
+    int option_index = 0;
+
+    if (argc < 2) {
+        show_help(argv);
+
+        return EXIT_FAILURE;
+    }
+
+    gru_logger_set(gru_logger_default_printer);
+    gru_logger_set_minimum(GRU_INFO);
+
+    options.daemon = false;
+    while (1) {
+
+        static struct option long_options[] = {
+                {"broker-url",     required_argument, 0, 'b'},
+                {"log-level",      required_argument, 0, 'l'},
+                {"daemon",         no_argument,       0, 'd'},
+                {0,                0,                 0, 0}
+        };
+
+        int c = getopt_long(
+                argc, argv, "b:l:d", long_options, &option_index);
+        if (c == -1) {
+            break;
+        }
+
+        switch (c) {
+            case 'b':
+                options.uri = optarg;
+                break;
+            case 'l':
+                options_set_log_level(optarg);
+                break;
+            case 'd':
+                options.daemon = true;
+                break;
+            default:
+                printf("Invalid or missing option\n");
+                show_help(argv);
+
+                return EXIT_FAILURE;
+        }
+    }
+
+    if (options.daemon) {
+        pid_t child = fork();
+
+        if (child == 0) {
+            return run();
+        }
+    }
+    else {
+        return run();
+    }
 }
