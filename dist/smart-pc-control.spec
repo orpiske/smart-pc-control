@@ -17,6 +17,8 @@ BuildRequires:      paho-c-devel
 BuildRequires:      libuuid-devel
 BuildRequires:      zlib-devel
 BuildRequires:      uriparser-devel
+BuildRequires:      gru-devel
+BuildRequires:      json-c-devel
 Requires:           python
 
 %description
