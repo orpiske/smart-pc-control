@@ -4,6 +4,7 @@ typedef struct options_t_ {
     char *uri;
     log_level_t log_level;
     bool daemon;
+    bool stateless;
 } options_t;
 
 static options_t options;
@@ -98,9 +99,14 @@ static int run() {
             .len = strlen("true")
     };
 
-    status = smart_client_send(&reply);
-    if (!gru_status_success(&status)) {
-        logger(GRU_FATAL, "Failed to reset PC status: %s", status.message);
+    if (options.stateless) {
+        logger(GRU_DEBUG, "Running stateless, therefore not resetting the state");
+    }
+    else {
+        status = smart_client_send(&reply);
+        if (!gru_status_success(&status)) {
+            logger(GRU_FATAL, "Failed to reset PC state: %s", status.message);
+        }
     }
 
     status = smart_client_receive(power_control_callback, smart_client_send);
@@ -131,6 +137,7 @@ int main(int argc, char **argv) {
                 {"broker-url",     required_argument, 0, 'b'},
                 {"log-level",      required_argument, 0, 'l'},
                 {"daemon",         no_argument,       0, 'd'},
+                {"stateless",      no_argument,       0, 's'},
                 {0,                0,                 0, 0}
         };
 
@@ -149,6 +156,9 @@ int main(int argc, char **argv) {
                 break;
             case 'd':
                 options.daemon = true;
+                break;
+            case 's':
+                options.stateless = true;
                 break;
             default:
                 printf("Invalid or missing option\n");
