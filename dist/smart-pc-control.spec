@@ -40,7 +40,6 @@ cd build
 %doc README.md
 %license LICENSE
 %{_bindir}/*
-%{_libdir}/*
 %{_sysconfdir}/*
 %{_prefix}/lib/systemd/*
 
