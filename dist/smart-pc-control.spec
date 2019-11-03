@@ -19,7 +19,6 @@ BuildRequires:      zlib-devel
 BuildRequires:      uriparser-devel
 BuildRequires:      gru-devel
 BuildRequires:      json-c-devel
-Requires:           python
 
 %description
 A tool for controlling your PC via homekit2mqtt
