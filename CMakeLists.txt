@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.4)
 project(smart_pc_control C)
 
+include(GNUInstallDirs)
+
 set(CMAKE_C_STANDARD 99)
 set(GRU_DIR "/usr" CACHE STRING "GRU directory")
 add_definitions(-DPROJECT_NAME="${PROJECT_NAME}")
@@ -30,8 +32,18 @@ link_libraries(${MATH_LIB}
 
 
 include_directories(src/ src/common)
-add_executable(smart-pc-control-power src/power-control/main.c src/power-control/main.h src/common/client.c src/common/client.h)
+add_executable(smart-pc-control-power
+        src/power-control/main.c
+        src/power-control/main.h
+        src/common/client.c
+        src/common/client.h)
+
+install(TARGETS
+        smart-pc-control-power
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        )
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     AddService(src/power-control/config smart-pc-control-power)
 endif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+
