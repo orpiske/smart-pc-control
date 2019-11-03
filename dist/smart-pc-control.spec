@@ -5,7 +5,7 @@
 Summary:            Smart PC Control
 Name:               smart-pc-control
 Version:            0.0.1
-Release:            1%{?dist}
+Release:            2%{?dist}
 License:            Apache v2
 Source:             smart-pc-control-%{version}.tar.gz
 URL:                https://github.com/orpiske/smart-pc-control.git
