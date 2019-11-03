@@ -35,7 +35,7 @@ message(STATUS "Math library found at ${MATH_LIB}")
 
 
 # GRU
-find_path(GRU_INCLUDE_DIR src/common/gru_base.h
+find_path(GRU_INCLUDE_DIR common/gru_base.h
         PATH_SUFFIXES gru-0
 				HINTS ${GRU_DIR}/${CMAKE_INSTALL_INCLUDEDIR})
 find_library(GRU_LIB NAMES gru-0
