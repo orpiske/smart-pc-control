@@ -98,8 +98,8 @@ include_directories(${PAHOC_INCLUDE_DIR})
 # file.
 macro(AddService SERVICE_CONFIG_SOURCE SERVICE_NAME)
 	if (${SYSTEMD_SUPPORT})
-		configure_file(${SERVICE_CONFIG_SOURCE}/${SERVICE_NAME}.service.in
-				${CMAKE_BUILD_SYSTEMD_UNIT_PATH}/${SERVICE_NAME}.service
+		configure_file(${SERVICE_CONFIG_SOURCE}/${SERVICE_NAME}@.service.in
+				${CMAKE_BUILD_SYSTEMD_UNIT_PATH}/${SERVICE_NAME}@.service
 				@ONLY
 				)
 
@@ -109,7 +109,7 @@ macro(AddService SERVICE_CONFIG_SOURCE SERVICE_NAME)
 				)
 
 		install(FILES
-				${CMAKE_BUILD_SYSTEMD_UNIT_PATH}/${SERVICE_NAME}.service
+				${CMAKE_BUILD_SYSTEMD_UNIT_PATH}/${SERVICE_NAME}@.service
 				DESTINATION ${CMAKE_INSTALL_SYSTEMD_UNIT_PATH}
 				)
 
