@@ -1,5 +1,4 @@
 #include "main.h"
-#include "../common/client.h"
 
 typedef struct options_t_ {
     char *uri;
