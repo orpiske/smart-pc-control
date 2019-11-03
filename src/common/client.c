@@ -2,12 +2,12 @@
 
 mqtt_conn_t mqtt_conn;
 
-gru_status_t smart_client_connect(char *connect_url) {
+gru_status_t smart_client_connect(const char *connect_url, const char *id) {
     logger_t logger = gru_logger_get();
     gru_status_t status = gru_status_new();
 
     int rc = MQTTClient_create(&mqtt_conn.client,
-                               connect_url, "smart-pc-controller",
+                               connect_url, id,
                                MQTTCLIENT_PERSISTENCE_NONE,
                                NULL);
 

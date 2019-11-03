@@ -5,7 +5,7 @@ After=syslog.target network.target
 [Service]
 Type=forking
 EnvironmentFile=-/@CMAKE_INSTALL_SYSCONFIG_PATH@/smart-pc-control-power
-ExecStart=@CMAKE_INSTALL_PREFIX@/bin/smart-pc-control-power -d -b $MQTT_BROKER_URL $DAEMON_OPTIONS
+ExecStart=@CMAKE_INSTALL_PREFIX@/bin/smart-pc-control-power -d -b $MQTT_BROKER_URL -i $CLIENT_ID $DAEMON_OPTIONS
 PrivateTmp=false
 
 [Install]

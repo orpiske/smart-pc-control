@@ -3,6 +3,7 @@
 typedef struct options_t_ {
     char *uri;
     log_level_t log_level;
+    char *id;
     bool daemon;
     bool stateless;
 } options_t;
@@ -21,9 +22,9 @@ static void show_help(char **argv) {
     gru_cli_option_help("help", "h", "show this help");
 
     gru_cli_option_help("broker-url", "b", "broker URL to connect to");
-    gru_cli_option_help("log-level",
-                        "l",
-                        "runs in the given verbose (info, stat, debug, etc) level mode");
+    gru_cli_option_help("log-level", "l", "runs in the given level (info, stat, debug, etc) mode");
+    gru_cli_option_help("stateless", "s", "do not update current state to the broker");
+    gru_cli_option_help("id", "i", "client id");
 }
 
 static reply_t *power_control_callback(const char *topic, const void *payload, int len, gru_status_t *status) {
@@ -81,7 +82,7 @@ static int run() {
         return EXIT_FAILURE;
     }
 
-    status = smart_client_connect(options.uri);
+    status = smart_client_connect(options.uri, options.id);
     if (!gru_status_success(&status)) {
         logger(GRU_FATAL, "Failed to connect to MQTT broker: %s", status.message);
         return EXIT_FAILURE;
@@ -136,13 +137,14 @@ int main(int argc, char **argv) {
         static struct option long_options[] = {
                 {"broker-url",     required_argument, 0, 'b'},
                 {"log-level",      required_argument, 0, 'l'},
+                {"id",             required_argument, 0, 'i'},
                 {"daemon",         no_argument,       0, 'd'},
                 {"stateless",      no_argument,       0, 's'},
                 {0,                0,                 0, 0}
         };
 
         int c = getopt_long(
-                argc, argv, "b:l:d", long_options, &option_index);
+                argc, argv, "b:l:i:ds", long_options, &option_index);
         if (c == -1) {
             break;
         }
@@ -154,12 +156,20 @@ int main(int argc, char **argv) {
             case 'l':
                 options_set_log_level(optarg);
                 break;
+            case 'i':
+                options.id = optarg;
+                break;
             case 'd':
                 options.daemon = true;
                 break;
             case 's':
                 options.stateless = true;
                 break;
+            case 'h':
+                show_help(argv);
+//                options_destroy(&options);
+
+                return EXIT_SUCCESS;
             default:
                 printf("Invalid or missing option\n");
                 show_help(argv);
