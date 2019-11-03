@@ -1,7 +1,8 @@
 # The URL of the MQTT broker
 MQTT_BROKER_URL=tcp://localhost:1883
 
-CLIENT_ID="power-control-$HOSTNAME"
+# Replace changeme with the hostname where the system is running
+CLIENT_ID="power-control-changeme"
 
 # Uncomment for clients that don't store any state
 # DAEMON_OPTIONS="--stateless"
