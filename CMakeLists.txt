@@ -29,5 +29,5 @@ link_libraries(${MATH_LIB}
         )
 
 
-include_directories(src/common)
+include_directories(src/ src/common)
 add_executable(smart_pc_control src/power-control/main.c src/power-control/main.h src/common/client.c src/common/client.h)

@@ -30,12 +30,42 @@ static reply_t *power_control_callback(const char *topic, const void *payload, i
     reply_t *reply = gru_alloc(sizeof(reply_t), status);
     gru_alloc_check(reply, NULL);
 
-    char *state = (char *) payload;
-
     logger(GRU_INFO, "Received %d bytes of data on the topic %s: %s", len, topic, payload);
-    reply->payload = strdup(state);
+
+    const char *app_home = gru_base_app_home("smart-pc-control");
+    char *command;
+
+    if (asprintf(&command, "%s/%s/script.sh %s", app_home, topic, payload) == -1) {
+        gru_status_set(status, GRU_FAILURE, "Not enough memory to execute script");
+
+        return NULL;
+    }
+    logger(GRU_INFO, "About to execute %s with args %s", command, payload);
+    int sret = system(command);
+    switch (sret) {
+        case 0: {
+            logger(GRU_INFO, "Executed successfully");
+            break;
+        }
+        case -1: {
+            logger(GRU_ERROR, "The child process could not be created");
+            break;
+        }
+        case 127: {
+            logger(GRU_ERROR, "The shell process could not be executed");
+            break;
+        }
+        default: {
+            logger(GRU_ERROR, "The script may have failed");
+            break;
+        }
+    }
+
+    reply->payload = strdup((char *) payload);
     reply->len = len;
     reply->topic = strdup("pc/nuc/status/on");
+
+    gru_dealloc_string(&command);
 
     return reply;
 }
@@ -81,10 +111,17 @@ int main(int argc, char **argv) {
         }
     }
 
-    gru_status_t status = smart_client_connect(options.uri);
-    if (!gru_status_success(&status)) {
-        logger_t logger = gru_logger_get();
+    logger_t logger = gru_logger_get();
+    gru_status_t status = gru_status_new();
 
+    const char *app_home = gru_base_app_home("smart-pc-control");
+    if (!gru_path_mkdirs(app_home, &status)) {
+        logger(GRU_FATAL, "Failed to create application directories: %s", status.message);
+        return EXIT_FAILURE;
+    }
+
+    status = smart_client_connect(options.uri);
+    if (!gru_status_success(&status)) {
         logger(GRU_FATAL, "Failed to connect to MQTT broker: %s", status.message);
         return EXIT_FAILURE;
     }
