@@ -8,6 +8,7 @@
 #include <gru-0/common/gru_status.h>
 #include <gru-0/log/gru_logger.h>
 #include <gru-0/network/gru_uri.h>
+#include <gru-0/io/gru_path.h>
 
 #include <MQTTClient.h>
 
@@ -28,6 +29,7 @@ typedef struct reply_t_ {
 typedef reply_t *(*smart_client_receive_fn)(const char *topic, const void *payload, int len, gru_status_t *status);
 typedef gru_status_t (*smart_client_send_fn)(reply_t *reply);
 
+gru_export gru_status_t smart_client_init(const char *connect_url, const char *id);
 gru_export gru_status_t smart_client_connect(const char *connect_url, const char *id);
 gru_export gru_status_t smart_client_subscribe(const char *topic);
 gru_export gru_status_t smart_client_receive(smart_client_receive_fn receive_callback, smart_client_send_fn send_callback);

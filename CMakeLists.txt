@@ -43,7 +43,19 @@ install(TARGETS
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         )
 
+add_executable(smart-pc-temperature-sensor
+        src/temperature-sensor/main.c
+        src/temperature-sensor/main.h
+        src/common/client.c
+        src/common/client.h)
+
+install(TARGETS
+        smart-pc-temperature-sensor
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        )
+
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     AddService(src/power-control/config smart-pc-control-power)
+    AddService(src/temperature-sensor/config smart-pc-temperature-sensor)
 endif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
 

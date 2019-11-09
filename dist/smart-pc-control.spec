@@ -4,8 +4,8 @@
 
 Summary:            Smart PC Control
 Name:               smart-pc-control
-Version:            0.0.1
-Release:            2%{?dist}
+Version:            0.0.2
+Release:            1%{?dist}
 License:            Apache v2
 Source:             smart-pc-control-%{version}.tar.gz
 URL:                https://github.com/orpiske/smart-pc-control.git
@@ -47,6 +47,9 @@ cd build
 %postun -p /sbin/ldconfig
 
 %changelog
+* Sat Nov 09 2019 Otavio R. Piske <angusyoung@gmail.com> - 0.0.2-1
+- Added temperature daemon
+
 * Sun Nov 03 2019 Otavio R. Piske <angusyoung@gmail.com> - 0.0.1-2
 - Fixes
 

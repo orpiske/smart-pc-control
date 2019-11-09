@@ -2,6 +2,40 @@
 
 mqtt_conn_t mqtt_conn;
 
+gru_status_t smart_client_init(const char *connect_url, const char *id) {
+    logger_t logger = gru_logger_get();
+    gru_status_t status = gru_status_new();
+
+    const char *app_home = gru_base_app_home("smart-pc-control");
+    if (!gru_path_mkdirs(app_home, &status)) {
+        gru_status_set(&status, GRU_FAILURE, "Failed to create application directories: %s",
+                status.message);
+
+        return status;
+    }
+
+    int retry = 10;
+    while (retry > 0) {
+        status = smart_client_connect(connect_url, id);
+        if (!gru_status_success(&status)) {
+            logger(GRU_FATAL, "Failed to connect to MQTT broker: %s", status.message);
+            retry--;
+
+            if (retry == 0) {
+                gru_status_set(&status, GRU_FAILURE, "Failed to connect to MQTT broker: %s",
+                        status.message);
+                return status;
+            }
+            sleep(5);
+        }
+        else {
+            break;
+        }
+    }
+
+    return status;
+}
+
 gru_status_t smart_client_connect(const char *connect_url, const char *id) {
     logger_t logger = gru_logger_get();
     gru_status_t status = gru_status_new();
