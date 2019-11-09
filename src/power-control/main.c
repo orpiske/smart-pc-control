@@ -79,31 +79,12 @@ static reply_t *power_control_callback(const char *topic, const void *payload, i
 
 static int run() {
     logger_t logger = gru_logger_get();
-    gru_status_t status = gru_status_new();
 
-    const char *app_home = gru_base_app_home("smart-pc-control");
-    if (!gru_path_mkdirs(app_home, &status)) {
-        logger(GRU_FATAL, "Failed to create application directories: %s", status.message);
+    gru_status_t status = smart_client_init(options.uri, options.id);
+    if (!gru_status_success(&status)) {
+        logger(GRU_FATAL, "%s", status.message);
         return EXIT_FAILURE;
     }
-
-    int retry = 10;
-    while (retry > 0) {
-        status = smart_client_connect(options.uri, options.id);
-        if (!gru_status_success(&status)) {
-            logger(GRU_FATAL, "Failed to connect to MQTT broker: %s", status.message);
-            retry--;
-
-            if (retry == 0) {
-                return EXIT_FAILURE;
-            }
-            sleep(5);
-        }
-        else {
-            break;
-        }
-    }
-
 
 
     status = smart_client_subscribe("pc/nuc/state/on");
