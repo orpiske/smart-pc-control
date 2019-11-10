@@ -5,7 +5,7 @@
 Summary:            Smart PC Control
 Name:               smart-pc-control
 Version:            0.0.2
-Release:            2%{?dist}
+Release:            3%{?dist}
 License:            Apache v2
 Source:             smart-pc-control-%{version}.tar.gz
 URL:                https://github.com/orpiske/smart-pc-control.git
@@ -20,6 +20,7 @@ BuildRequires:      uriparser-devel
 BuildRequires:      gru-devel
 BuildRequires:      json-c-devel
 Requires:           jq
+Requires:           lm_sensors
 
 %description
 A tool for controlling your PC via homekit2mqtt
@@ -48,6 +49,11 @@ cd build
 %postun -p /sbin/ldconfig
 
 %changelog
+* Sat Nov 10 2019 Otavio R. Piske <angusyoung@gmail.com> - 0.0.2-3
+- Added missing dependency: lm_sensors
+- Fixed memory handling issues
+- Fixed return status handling issues
+
 * Sat Nov 09 2019 Otavio R. Piske <angusyoung@gmail.com> - 0.0.2-2
 - Added missing dependency: jq
 
