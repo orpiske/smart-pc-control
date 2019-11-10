@@ -4,8 +4,8 @@
 
 Summary:            Smart PC Control
 Name:               smart-pc-control
-Version:            0.0.2
-Release:            3%{?dist}
+Version:            0.0.3
+Release:            1%{?dist}
 License:            Apache v2
 Source:             smart-pc-control-%{version}.tar.gz
 URL:                https://github.com/orpiske/smart-pc-control.git
@@ -43,12 +43,16 @@ cd build
 %{_bindir}/*
 %{_sysconfdir}/*
 %{_prefix}/lib/systemd/*
+%{%_libexecdir}/*
 
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
 
 %changelog
+* Sat Nov 10 2019 Otavio R. Piske <angusyoung@gmail.com> - 0.0.3-1
+- Added support for installing the scripts
+
 * Sat Nov 10 2019 Otavio R. Piske <angusyoung@gmail.com> - 0.0.2-3
 - Added missing dependency: lm_sensors
 - Fixed memory handling issues

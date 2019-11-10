@@ -119,3 +119,17 @@ macro(AddService SERVICE_CONFIG_SOURCE SERVICE_NAME)
 				)
 	endif (${SYSTEMD_SUPPORT})
 endmacro(AddService)
+
+macro(AddScript SENSOR_NAME SCRIPT_NAME)
+	configure_file(src/${SENSOR_NAME}/scripts/${SCRIPT_NAME}.in
+		${CMAKE_BINARY_DIR}/target/${CMAKE_INSTALL_FULL_LIBEXECDIR}/smart-pc-control/${SENSOR_NAME}/${SCRIPT_NAME}.sh
+		@ONLY
+	)
+
+	install(PROGRAMS ${CMAKE_BINARY_DIR}/target/${CMAKE_INSTALL_FULL_LIBEXECDIR}/smart-pc-control/${SENSOR_NAME}/${SCRIPT_NAME}.sh
+		DESTINATION ${CMAKE_INSTALL_FULL_LIBEXECDIR}/smart-pc-control/
+	)
+endmacro(AddScript)
+
+
+

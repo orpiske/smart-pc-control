@@ -54,6 +54,10 @@ install(TARGETS
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         )
 
+AddScript(temperature-sensor script.sh)
+AddScript(power-control power-off/script.sh)
+AddScript(power-control power-on/script.sh)
+
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     AddService(src/power-control/config smart-pc-control-power)
     AddService(src/temperature-sensor/config smart-pc-temperature-sensor)
