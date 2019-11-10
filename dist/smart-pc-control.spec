@@ -43,7 +43,7 @@ cd build
 %{_bindir}/*
 %{_sysconfdir}/*
 %{_prefix}/lib/systemd/*
-%{%_libexecdir}/*
+%{_libexecdir}/*
 
 %post -p /sbin/ldconfig
 
