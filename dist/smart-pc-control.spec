@@ -50,10 +50,10 @@ cd build
 %postun -p /sbin/ldconfig
 
 %changelog
-* Sat Nov 10 2019 Otavio R. Piske <angusyoung@gmail.com> - 0.0.3-1
+* Sun Nov 10 2019 Otavio R. Piske <angusyoung@gmail.com> - 0.0.3-1
 - Added support for installing the scripts
 
-* Sat Nov 10 2019 Otavio R. Piske <angusyoung@gmail.com> - 0.0.2-3
+* Sun Nov 10 2019 Otavio R. Piske <angusyoung@gmail.com> - 0.0.2-3
 - Added missing dependency: lm_sensors
 - Fixed memory handling issues
 - Fixed return status handling issues
