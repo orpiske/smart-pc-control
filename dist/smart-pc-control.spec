@@ -30,7 +30,7 @@ A tool for controlling your PC via homekit2mqtt
 
 %build
 mkdir build && cd build
-%cmake ..
+%cmake -DCMAKE_USER_C_FLAGS="-fPIC" ..
 %make_build
 
 %install
