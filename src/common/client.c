@@ -106,6 +106,7 @@ gru_status_t smart_client_receive(smart_client_receive_fn receive_callback, smar
                     }
                     else {
                         reply_callback(reply);
+                        gru_dealloc(&reply);
                     }
                 }
 
