@@ -36,7 +36,7 @@ static reply_t *power_control_callback(const char *topic, const void *payload, i
     const char *app_home = gru_base_app_home("smart-pc-control");
     char *command;
 
-    if (asprintf(&command, "%s/%s/script.sh %s", app_home, topic, payload) == -1) {
+    if (asprintf(&command, "%s/%s/script.sh %s", app_home, topic, (char *) payload) == -1) {
         gru_status_set(status, GRU_FAILURE, "Not enough memory to execute script");
 
         return NULL;

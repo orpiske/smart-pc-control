@@ -96,7 +96,7 @@ static gru_status_t setActive(const char *baseTopic) {
 
     reply_t reply = {
             .payload = "true",
-            .len = strlen(reply.payload)
+            .len = (int) strlen(reply.payload)
     };
 
     if (asprintf(&reply.topic, "%s/active", baseTopic) == -1) {
@@ -128,7 +128,7 @@ static gru_status_t readTemperature(const char *name, const char *topic) {
     reply_t reply = {
             .topic = (char *) topic,
             .payload = (char *) sensorData,
-            .len = strlen(sensorData)
+            .len = (int) strlen(sensorData)
     };
 
     status = smart_client_send(&reply);
