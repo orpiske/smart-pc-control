@@ -113,7 +113,7 @@ static gru_status_t setActive(const char *baseTopic) {
         return status;
     }
 
-
+    return status;
 }
 
 static gru_status_t readTemperature(const char *name, const char *topic) {
