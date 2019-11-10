@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8.4)
 project(smart_pc_control C)
 
 include(GNUInstallDirs)
+include(CheckLists.cmake)
 
 set(CMAKE_C_STANDARD 99)
 set(GRU_DIR "/usr" CACHE STRING "GRU directory")
