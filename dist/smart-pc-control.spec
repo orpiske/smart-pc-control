@@ -5,7 +5,7 @@
 Summary:            Smart PC Control
 Name:               smart-pc-control
 Version:            0.0.3
-Release:            1%{?dist}
+Release:            2%{?dist}
 License:            Apache v2
 Source:             smart-pc-control-%{version}.tar.gz
 URL:                https://github.com/orpiske/smart-pc-control.git
@@ -29,9 +29,9 @@ A tool for controlling your PC via homekit2mqtt
 %autosetup -n smart-pc-control-%{version}
 
 %build
-mkdir build && cd build
-%cmake -DCMAKE_USER_C_FLAGS="-fPIC" ..
-%make_build
+mkdir build
+%cmake -DCMAKE_USER_C_FLAGS="-fPIC" -S . -B build
+cd build && %make_build
 
 %install
 cd build
@@ -50,6 +50,9 @@ cd build
 %postun -p /sbin/ldconfig
 
 %changelog
+* Fri Sep 24 2024 Otavio R. Piske <angusyoung@gmail.com> - 0.0.3-2
+- Adjusted package to build on Fedora 33, 34, 34 and rawhide
+
 * Sun Nov 10 2019 Otavio R. Piske <angusyoung@gmail.com> - 0.0.3-1
 - Added support for installing the scripts
 
