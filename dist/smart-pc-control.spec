@@ -50,6 +50,9 @@ cd build
 %postun -p /sbin/ldconfig
 
 %changelog
+* Sun Sep 26 2024 Otavio R. Piske <angusyoung@gmail.com> - 0.0.3-3
+- Fixed overly verbose log message
+
 * Fri Sep 24 2024 Otavio R. Piske <angusyoung@gmail.com> - 0.0.3-2
 - Adjusted package to build on Fedora 33, 34, 34 and rawhide
 

@@ -97,7 +97,7 @@ gru_status_t smart_client_receive(smart_client_receive_fn receive_callback, smar
                 if (!msg) {
                     // No data received, so send a ping to prevent remote disconnect
                     MQTTClient_yield();
-                    logger(GRU_INFO, "No data");
+                    logger(GRU_DEBUG, "No data was received from the MQTT broker");
                 }
                 else {
                     reply_t *reply = receive_callback(received_topic, msg->payload, msg->payloadlen, &status);
