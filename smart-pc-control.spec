@@ -4,8 +4,8 @@
 
 Summary:            Smart PC Control
 Name:               smart-pc-control
-Version:            0.0.0
-Release:            0%{?dist}
+Version:            0.0.3
+Release:            1%{?dist}
 License:            Apache v2
 # Sources can be obtained by
 # git clone https://github.com/orpiske/smart-pc-control
@@ -54,6 +54,9 @@ cd build
 %postun -p /sbin/ldconfig
 
 %changelog
+* Sat Mar 05 2022 Otavio R. Piske <angusyoung@gmail.com> 0.0.3-1
+- new package built with tito
+
 * Sun Sep 26 2024 Otavio R. Piske <angusyoung@gmail.com> - 0.0.3-3
 - Fixed overly verbose log message
 
