@@ -13,7 +13,7 @@ License:            Apache v2
 # tito build --tgz
 Source0:             smart-pc-control-%{version}.tar.gz
 URL:                https://github.com/orpiske/smart-pc-control.git
-BuildRequires:      cmake
+BuildRequires:      cmake >= 3.0.0
 BuildRequires:      make
 BuildRequires:      gcc >= 4.8.0
 BuildRequires:      gcc-c++
@@ -55,7 +55,7 @@ cd build
 
 %changelog
 * Sat Mar 05 2022 Otavio R. Piske <angusyoung@gmail.com> 0.0.4-1
-- 
+-
 
 * Sat Mar 05 2022 Otavio R. Piske <angusyoung@gmail.com> 0.0.3-1
 - new package built with tito
