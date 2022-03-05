@@ -4,10 +4,14 @@
 
 Summary:            Smart PC Control
 Name:               smart-pc-control
-Version:            0.0.3
-Release:            2%{?dist}
+Version:            0.0.0
+Release:            0%{?dist}
 License:            Apache v2
-Source:             smart-pc-control-%{version}.tar.gz
+# Sources can be obtained by
+# git clone https://github.com/orpiske/smart-pc-control
+# cd gru
+# tito build --tgz
+Source0:             smart-pc-control-%{version}.tar.gz
 URL:                https://github.com/orpiske/smart-pc-control.git
 BuildRequires:      cmake
 BuildRequires:      make
