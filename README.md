@@ -6,7 +6,10 @@ Build Status
 Fedora (GRU Testing): [![Fedora COPR (Testing Repo) Status](https://copr.fedorainfracloud.org/coprs/orpiske/orp-tools-testing/package/smart-pc-control/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/orpiske/orp-tools-testing/package/smart-pc-control/)
 
 
-nstallation:
+----
+You can find the old version written in C in the [c-version](https://github.com/orpiske/smart-pc-control/tree/c-version) branch.
+
+Installation:
 ----
 
 The code can be installed via Fedora COPR. Packages are available for CentOS 6, 7, Fedora 33

@@ -1,0 +1,11 @@
+[package]
+name = "smart-pc-control"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+paho-mqtt = "0.11"
+system_shutdown = "4.0.0"
+wake-on-lan = "0.2.0"
