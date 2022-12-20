@@ -2,9 +2,9 @@ use std::process;
 use std::time::Duration;
 
 use paho_mqtt as mqtt;
-use paho_mqtt::Client;
+use paho_mqtt::{Client, Message};
 
-const DEFAULT_QOS: i32 = 1;
+// const DEFAULT_QOS: i32 = 1;
 const QOS_AT_MOST_ONCE: i32 = mqtt::QOS_1;
 
 fn clean_disconnect(cli: &Client) {
@@ -12,23 +12,10 @@ fn clean_disconnect(cli: &Client) {
     cli.disconnect(None).unwrap();
 }
 
-fn set_turned_on_state(default_topic: &str, cli: &Client) {
-    // Create a message and publish it
-    let msg = mqtt::MessageBuilder::new()
-        .topic(default_topic)
-        .payload("true")
-        .qos(DEFAULT_QOS)
-        .finalize();
-
-    if let Err(e) = cli.publish(msg) {
-        println!("Error sending message: {:?}", e);
-
-        clean_disconnect(&cli);
-        process::exit(1);
-    }
-}
-
-pub fn client(address: String) {
+pub fn client<F, K>(address: String, on_connect: F, on_message: K) where
+    F: FnOnce(&str, &Client) -> paho_mqtt::Result<()>,
+    K: FnOnce(&Option<Message>) + Copy
+{
     let default_topic = "pc/nuc/status/on";
 
     let cli = mqtt::Client::new(address).unwrap_or_else(|err| {
@@ -70,31 +57,20 @@ pub fn client(address: String) {
         }
     }
 
-    set_turned_on_state(default_topic, &cli);
+    if let Err(e) = on_connect(default_topic, &cli) {
+        println!("Error connecting to the broker: {:?}", e);
+
+        clean_disconnect(&cli);
+        process::exit(1);
+    }
 
     for msg in rx.iter() {
-        if let Some(msg) = msg {
-            match msg.payload_str().trim().parse() {
-                Ok(v) => {
-                    dbg!("Received a request with data: {v}");
-                    let data: String = v;
-                    dbg!("Received a parseable response as string: {data}");
-                    if data.eq("true") {
-                        println!("The computer is already on");
-                    } else if data.eq("false") {
-                        println!("Shutting down the computer ...");
-                    } else {
-                        println!("Invalid request data");
-                    }
-                }
-                Err(_) => {
-                    println!("Failed to parse the response");
-                    continue;
-                }
-            }
-        }
+        on_message(&msg);
+        // handle_incoming_message(msg);
     }
 
     clean_disconnect(&cli);
 }
+
+
 
