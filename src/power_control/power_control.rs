@@ -6,9 +6,16 @@ const QOS_AT_MOST_ONCE: i32 = mqtt::QOS_1;
 use system_shutdown::shutdown;
 
 fn turn_off() {
-    match shutdown() {
-        Ok(_) => println!("Shutting down, bye!"),
-        Err(error) => eprintln!("Failed to shut down: {}", error),
+    let default_environment = String::from("development");
+    let environment= std::env::var("SMART_PC_CONTROL_ENVIRONMENT").unwrap_or(default_environment);
+
+    if environment.eq("production") {
+        match shutdown() {
+            Ok(_) => println!("Shutting down, bye!"),
+            Err(error) => eprintln!("Failed to shut down: {}", error),
+        }
+    } else {
+        println!("The application is running on {environment} environment where shutdown is not allowed. Set SMART_PC_CONTROL_ENVIRONMENT to 'production' to override")
     }
 }
 
@@ -33,7 +40,7 @@ pub fn handle_incoming_message(msg: &Option<Message>) {
                 if data.eq("true") {
                     println!("The computer is already on");
                 } else if data.eq("false") {
-                    // turn_off();
+                    turn_off();
                     println!("Shutting down the computer ...");
                 } else {
                     eprintln!("Invalid request data");
