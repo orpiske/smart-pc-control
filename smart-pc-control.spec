@@ -13,33 +13,25 @@ License:            Apache v2
 # tito build --tgz
 Source0:             smart-pc-control-%{version}.tar.gz
 URL:                https://github.com/orpiske/smart-pc-control.git
+BuildRequires:      rust-packaging
 BuildRequires:      cmake >= 3.0.0
 BuildRequires:      make
 BuildRequires:      gcc >= 4.8.0
 BuildRequires:      gcc-c++
-BuildRequires:      paho-c-devel
-BuildRequires:      libuuid-devel
-BuildRequires:      zlib-devel
-BuildRequires:      uriparser-devel
-BuildRequires:      gru-devel
-BuildRequires:      json-c-devel
-Requires:           jq
-Requires:           lm_sensors
+BuildRequires:      openssl-devel
 
 %description
 A tool for controlling your PC via homekit2mqtt
 
 %prep
-%autosetup -n smart-pc-control-%{version}
+%generate_buildrequires
+%cargo_generate_buildrequires
 
 %build
-mkdir build
-%cmake -DCMAKE_USER_C_FLAGS="-fPIC" -S . -B build
-cd build && %make_build
+%cargo_build -a
 
 %install
-cd build
-%make_install
+%cargo_install -a
 
 %files
 %doc README.md
@@ -49,13 +41,14 @@ cd build
 %{_prefix}/lib/systemd/*
 %{_libexecdir}/*
 
-%post -p /sbin/ldconfig
-
-%postun -p /sbin/ldconfig
+%if %{with check}
+%check
+%cargo_test -a
+%endif
 
 %changelog
-* Sat Mar 05 2022 Otavio R. Piske <angusyoung@gmail.com> 0.0.4-1
--
+* Thu Dec 22 2022 Otavio R. Piske <angusyoung@gmail.com> 0.0.4-1
+- Converted the project to Rust
 
 * Sat Mar 05 2022 Otavio R. Piske <angusyoung@gmail.com> 0.0.3-1
 - new package built with tito
