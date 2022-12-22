@@ -4,7 +4,6 @@ use std::time::Duration;
 use paho_mqtt as mqtt;
 use paho_mqtt::{Client, Message};
 
-// const DEFAULT_QOS: i32 = 1;
 const QOS_AT_MOST_ONCE: i32 = mqtt::QOS_1;
 
 fn clean_disconnect(cli: &Client) {
@@ -66,7 +65,6 @@ pub fn client<F, K>(address: String, on_connect: F, on_message: K) where
 
     for msg in rx.iter() {
         on_message(&msg);
-        // handle_incoming_message(msg);
     }
 
     clean_disconnect(&cli);
