@@ -1,4 +1,3 @@
-use std::env::VarError;
 use paho_mqtt as mqtt;
 use paho_mqtt::{Client, Message};
 use wake_on_lan as wol;
@@ -26,22 +25,22 @@ fn turn_on() {
 
     match std::env::var("SMART_PC_CONTROL_TARGET_MAC_ADDRESS") {
         Ok(address) => {
-            let mut i: i8 = 0;
-            for octet in address.unwrap().split(':') {
+            let mut i= 0;
+            for octet in address.split(':') {
                 match octet.parse() {
                     Ok(octet) => {
                         mac_address[i] = octet;
                         i += 1;
                     }
                     Err(error) => {
-                        println("Unable to convert value to octet: {}", error);
+                        println!("Unable to convert value to octet: {}", error);
                         break;
                     }
                 };
             }
         }
         Err(_) => {
-            eprintln!("The target mac address is unset. Set SMART_PC_CONTROL_TARGET_MAC_ADDRESS to configure")
+            eprintln!("The target mac address is unset. Set SMART_PC_CONTROL_TARGET_MAC_ADDRESS to configure");
             return;
         }
     };
@@ -75,7 +74,8 @@ pub fn handle_incoming_message(msg: &Option<Message>) {
                 let data: String = v;
                 dbg!("Received a parseable response as string: {data}");
                 if data.eq("true") {
-                    println!("The computer is already on");
+                    println!("Turning on the remote computer");
+                    turn_on();
                 } else if data.eq("false") {
                     turn_off();
                     println!("Shutting down the computer ...");
