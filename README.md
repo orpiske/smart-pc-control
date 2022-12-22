@@ -29,11 +29,29 @@ Packaging
 Steps from: https://docs.fedoraproject.org/en-US/quick-docs/publish-rpm-on-copr/
 
 
-
 ```
 tito build --test
 tito tag && git push --follow-tags origin
 ```
+
+Upgrading
+---
+
+If you are using Fedora, you can skip these steps. If you are using Raspbian, then you have to uninstall the old version in C.
+
+On the directory you had the version in C, you can use the `uninstall` target to remove the C binaries:
+
+```shell
+sudo systemctl stop smart-pc-control-power@pi.service
+sudo make uninstall
+```
+
+Then, you can compile and install manually
+
+```shell
+make build && sudo make install
+```
+
 
 Configuration:
 ----
@@ -76,3 +94,5 @@ SMART_PC_CONTROL_STATELESS="true"
 # Ensure to export library dir if not using a standard location
 SMART_PC_CONTROL_TARGET_MAC_ADDRESS="00:00:00:00:00:00"
 ```
+
+
