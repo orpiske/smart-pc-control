@@ -77,9 +77,9 @@ pub fn handle_incoming_message(msg: &Option<Message>) {
     if let Some(msg) = msg {
         match msg.payload_str().trim().parse() {
             Ok(v) => {
-                dbg!("Received a request with data: {v}");
+                dbg!(std::format!("Received a request with data: {v}"));
                 let data: String = v;
-                dbg!("Received a parseable response as string: {data}");
+                dbg!(std::format!("Received a parseable response as string: {data}"));
                 if data.eq("true") {
                     println!("Turning on the remote computer");
                     turn_on();
