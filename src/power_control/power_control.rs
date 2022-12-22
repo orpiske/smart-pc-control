@@ -33,7 +33,7 @@ fn turn_on() {
                         i += 1;
                     }
                     Err(error) => {
-                        println!("Unable to convert value to octet: {}", error);
+                        println!("Unable to convert value to octet {octet}: {}", error);
                         break;
                     }
                 };
