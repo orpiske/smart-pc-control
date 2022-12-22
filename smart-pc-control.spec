@@ -5,7 +5,7 @@
 
 Summary:            Smart PC Control
 Name:               smart-pc-control
-Version:            0.0.4
+Version:            0.1.0
 Release:            1%{?dist}
 License:            Apache v2
 # Sources can be obtained by
@@ -46,6 +46,17 @@ install -D -m644 src/power_control/config/smart-pc-control-power.service %{build
 %endif
 
 %changelog
+* Thu Dec 22 2022 Otavio R. Piske <angusyoung@gmail.com> 0.1.0-1
+- SystemD unit must reload after install (angusyoung@gmail.com)
+- SystemD unit must use exec for this binary (angusyoung@gmail.com)
+- Updated documentation (angusyoung@gmail.com)
+- Packaging fixes (angusyoung@gmail.com)
+- Removed the old scripts used by the C version (angusyoung@gmail.com)
+- Converted the project to Rust (angusyoung@gmail.com)
+- Removed CMake build files and C source code (angusyoung@gmail.com)
+- CMake 3 or greater is required for the build (angusyoung@gmail.com)
+- Updated readme (angusyoung@gmail.com)
+
 * Thu Dec 22 2022 Otavio R. Piske <angusyoung@gmail.com> 0.0.4-1
 - Converted the project to Rust
 
