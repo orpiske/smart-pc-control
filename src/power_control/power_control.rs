@@ -25,18 +25,8 @@ fn turn_on() {
 
     match std::env::var("SMART_PC_CONTROL_TARGET_MAC_ADDRESS") {
         Ok(address) => {
-            let mut i= 0;
-            for octet in address.split(':') {
-                match octet.parse() {
-                    Ok(octet) => {
-                        mac_address[i] = octet;
-                        i += 1;
-                    }
-                    Err(error) => {
-                        println!("Unable to convert value to octet {octet}: {}", error);
-                        break;
-                    }
-                };
+            if let Err(error) = convert(&mut mac_address, address) {
+                eprintln!("{}", error)
             }
         }
         Err(_) => {
@@ -53,6 +43,23 @@ fn turn_on() {
             println!("Unable to send magic packet: {}", error);
         }
     }
+}
+
+fn convert(mac_address: &mut [u8; 6], address: String) -> Result<String, &str> {
+    let mut i = 0;
+    for octet in address.split(':') {
+        match u8::from_str_radix(octet, 16) {
+            Ok(octet) => {
+                mac_address[i] = octet;
+                i += 1;
+            }
+            Err(_) => {
+                return Err("Unable to convert value to octet {octet}: {}")
+            }
+        };
+    }
+
+    Ok(String::from(""))
 }
 
 pub fn set_turned_on_state(default_topic: &str, cli: &Client) -> paho_mqtt::Result<()> {
@@ -88,4 +95,31 @@ pub fn handle_incoming_message(msg: &Option<Message>) {
             }
         }
     }
+}
+
+#[test]
+fn test_conversion() {
+    let expected_mac_address: [u8; 6] = [0x54, 0xb2, 0x03, 0x09, 0x10, 0xd7];
+    let mut mac_address: [u8; 6] = [0; 6];
+
+    let address = String::from("54:b2:03:09:10:d7");
+    match convert(&mut mac_address, address) {
+        Ok(_) => { assert_eq!(mac_address, expected_mac_address) }
+        Err(error) => { panic!("{}", error) }
+    };
+
+
+}
+
+#[test]
+fn test_conversion_invalid() {
+    let mut mac_address: [u8; 6] = [0; 6];
+
+    let address = String::from("54:zz:03:09:10");
+    match convert(&mut mac_address, address) {
+        Ok(_) => { panic!("This conversion should have failed") }
+        Err(error) => {
+            assert_eq!(error, "Unable to convert value to octet {octet}: {}")
+        }
+    };
 }
