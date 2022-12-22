@@ -81,6 +81,9 @@ pub fn set_turned_on_state(default_topic: &str, cli: &Client) -> paho_mqtt::Resu
 }
 
 pub fn handle_incoming_message(msg: &Option<Message>) {
+    let stateless = std::env::var("SMART_PC_CONTROL_STATELESS").unwrap_or(String::from("false"));
+    let stateless: bool = stateless.parse().unwrap_or(false);
+
     if let Some(msg) = msg {
         match msg.payload_str().trim().parse() {
             Ok(v) => {
@@ -90,7 +93,7 @@ pub fn handle_incoming_message(msg: &Option<Message>) {
                 if data.eq("true") {
                     println!("Turning on the remote computer");
                     turn_on();
-                } else if data.eq("false") {
+                } else if data.eq("false") && !stateless {
                     turn_off();
                     println!("Shutting down the computer ...");
                 } else {
