@@ -29,7 +29,50 @@ Packaging
 Steps from: https://docs.fedoraproject.org/en-US/quick-docs/publish-rpm-on-copr/
 
 
+
 ```
 tito build --test
 tito tag && git push --follow-tags origin
+```
+
+Configuration:
+----
+
+First set up the infrastructure required to integrate with HomeKit: 
+
+* A MQTT broker
+* Homekit2mqtt
+
+I wrote about these steps in [my blog](https://www.orpiske.net/2019/11/controlling-a-pc-via-apple-homekit/).
+
+Then, configure the daemon on the host you want to shut down (the one that will be turned off when you flip the switch on the iPhone/iPad). To do so edit the file `/etc/sysconfig/smart-pc-control-power.sh`.
+
+For this host you only need to set the address of the MQTT broker:
+
+```shell
+# Set the 
+MQTT_BROKER_URL=tcp://thyone:1883
+
+SMART_PC_CONTROL_ENVIRONMENT="production"
+
+# Uncomment for clients that don't store any state
+# SMART_PC_CONTROL_STATELESS="false"
+
+# Ensure to export library dir if not using a standard location
+# SMART_PC_CONTROL_TARGET_MAC_ADDRESS="54:b2:03:09:10:d7"
+```
+
+Then on the host that will send the magic packet for the wake-on-lan, configure the file like this: 
+
+```shell
+# Set the 
+MQTT_BROKER_URL=tcp://thyone:1883
+
+SMART_PC_CONTROL_ENVIRONMENT="production"
+
+# Uncomment for clients that don't store any state
+SMART_PC_CONTROL_STATELESS="true"
+
+# Ensure to export library dir if not using a standard location
+SMART_PC_CONTROL_TARGET_MAC_ADDRESS="00:00:00:00:00:00"
 ```

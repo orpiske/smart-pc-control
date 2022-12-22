@@ -1,6 +1,7 @@
 # Debug info package generation currently breaks the RPM build
 %global _enable_debug_package 0
 %global debug_package %{nil}
+%global srcname gru
 
 Summary:            Smart PC Control
 Name:               smart-pc-control
@@ -11,12 +12,10 @@ License:            Apache v2
 # git clone https://github.com/orpiske/smart-pc-control
 # cd gru
 # tito build --tgz
-Source0:             smart-pc-control-%{version}.tar.gz
+Source0:            %{name}-%{version}.tar.gz
 URL:                https://github.com/orpiske/smart-pc-control.git
-BuildRequires:      rust-packaging
-BuildRequires:      cmake >= 3.0.0
-BuildRequires:      make
-BuildRequires:      gcc >= 4.8.0
+BuildRequires:      cmake
+BuildRequires:      gcc
 BuildRequires:      gcc-c++
 BuildRequires:      openssl-devel
 
@@ -24,22 +23,22 @@ BuildRequires:      openssl-devel
 A tool for controlling your PC via homekit2mqtt
 
 %prep
-%generate_buildrequires
-%cargo_generate_buildrequires
+%autosetup -n %{name}-%{version}
 
 %build
 %cargo_build -a
 
 %install
-%cargo_install -a
+install -D -m755 target/release/smart-pc-control %{buildroot}/%{_exec_prefix}/bin/smart-pc-control
+install -D -m644 src/power_control/config/smart-pc-control-power.sh %{buildroot}/%{_sysconfdir}/sysconfig/smart-pc-control-power.sh
+install -D -m644 src/power_control/config/smart-pc-control-power.service %{buildroot}/%{_prefix}/lib/systemd/system/smart-pc-control-power.service
 
 %files
 %doc README.md
 %license LICENSE
-%{_bindir}/*
+%{_exec_prefix}/*
 %{_sysconfdir}/*
 %{_prefix}/lib/systemd/*
-%{_libexecdir}/*
 
 %if %{with check}
 %check
@@ -53,10 +52,10 @@ A tool for controlling your PC via homekit2mqtt
 * Sat Mar 05 2022 Otavio R. Piske <angusyoung@gmail.com> 0.0.3-1
 - new package built with tito
 
-* Sun Sep 26 2024 Otavio R. Piske <angusyoung@gmail.com> - 0.0.3-3
+* Sun Sep 26 2021 Otavio R. Piske <angusyoung@gmail.com> - 0.0.3-3
 - Fixed overly verbose log message
 
-* Fri Sep 24 2024 Otavio R. Piske <angusyoung@gmail.com> - 0.0.3-2
+* Fri Sep 24 2021 Otavio R. Piske <angusyoung@gmail.com> - 0.0.3-2
 - Adjusted package to build on Fedora 33, 34, 34 and rawhide
 
 * Sun Nov 10 2019 Otavio R. Piske <angusyoung@gmail.com> - 0.0.3-1
