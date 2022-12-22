@@ -63,14 +63,21 @@ fn convert(mac_address: &mut [u8; 6], address: String) -> Result<String, &str> {
 }
 
 pub fn set_turned_on_state(default_topic: &str, cli: &Client) -> paho_mqtt::Result<()> {
-    // Create a message and publish it
-    let msg = mqtt::MessageBuilder::new()
-        .topic(default_topic)
-        .payload("true")
-        .qos(QOS_AT_MOST_ONCE)
-        .finalize();
+    let stateless = std::env::var("SMART_PC_CONTROL_STATELESS").unwrap_or(String::from("false"));
+    let stateless: bool = stateless.parse().unwrap_or(false);
 
-    cli.publish(msg)
+    if !stateless {
+        // Create a message and publish it
+        let msg = mqtt::MessageBuilder::new()
+            .topic(default_topic)
+            .payload("true")
+            .qos(QOS_AT_MOST_ONCE)
+            .finalize();
+
+        return cli.publish(msg);
+    }
+
+    return Ok(());
 }
 
 pub fn handle_incoming_message(msg: &Option<Message>) {
