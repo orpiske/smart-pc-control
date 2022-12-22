@@ -114,8 +114,6 @@ fn test_conversion() {
         Ok(_) => { assert_eq!(mac_address, expected_mac_address) }
         Err(error) => { panic!("{}", error) }
     };
-
-
 }
 
 #[test]
