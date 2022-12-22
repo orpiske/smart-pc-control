@@ -3,7 +3,7 @@ Description=Smart PC Control - Power Daemon
 After=syslog.target network.target
 
 [Service]
-Type=forking
+Type=exec
 EnvironmentFile=-/etc/sysconfig/smart-pc-control-power.sh
 ExecStart=/usr/bin/smart-pc-control power $MQTT_BROKER_URL
 PrivateTmp=false
