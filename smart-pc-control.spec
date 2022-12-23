@@ -2,7 +2,7 @@
 
 Summary:            Smart PC Control
 Name:               smart-pc-control
-Version:            0.1.3
+Version:            0.1.4
 Release:            1%{?dist}
 License:            Apache v2
 # Sources can be obtained by
@@ -49,6 +49,10 @@ install -D -m644 src/power_control/config/smart-pc-control-power.service %{build
 %endif
 
 %changelog
+* Fri Dec 23 2022 Otavio R. Piske <angusyoung@gmail.com> 0.1.4-1
+- Fixed incorrect path for the systemd unit file (angusyoung@gmail.com)
+- Updated cargo lock (angusyoung@gmail.com)
+
 * Fri Dec 23 2022 Otavio R. Piske <angusyoung@gmail.com> 0.1.3-1
 - Added missing package for building (angusyoung@gmail.com)
 - Remove the outdated debug setting (angusyoung@gmail.com)
