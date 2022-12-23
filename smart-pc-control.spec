@@ -19,14 +19,18 @@ BuildRequires:      gcc
 BuildRequires:      gcc-c++
 BuildRequires:      openssl-devel
 
+
 %description
 A tool for controlling your PC via homekit2mqtt
+
 
 %prep
 %autosetup -n %{name}-%{version}
 
+
 %build
 %cargo_build -a
+
 
 %install
 install -D -m755 target/release/smart-pc-control %{buildroot}/%{_exec_prefix}/bin/smart-pc-control
@@ -39,6 +43,7 @@ install -D -m644 src/power_control/config/smart-pc-control-power.service %{build
 %{_exec_prefix}/bin/smart-pc-control
 %{_sysconfdir}/sysconfig/smart-pc-control-power.sh
 %{_prefix}/lib/systemd/smart-pc-control-power.service
+
 
 %if %{with check}
 %check
