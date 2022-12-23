@@ -15,6 +15,7 @@ BuildRequires:      cmake
 BuildRequires:      gcc
 BuildRequires:      gcc-c++
 BuildRequires:      openssl-devel
+BuildRequires:      rust-packaging
 
 
 %description
