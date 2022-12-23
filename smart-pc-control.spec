@@ -1,7 +1,7 @@
 # Debug info package generation currently breaks the RPM build
 %global _enable_debug_package 0
 %global debug_package %{nil}
-%global srcname gru
+%global srcname smart-pc-control
 
 Summary:            Smart PC Control
 Name:               smart-pc-control
