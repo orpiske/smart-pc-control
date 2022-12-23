@@ -2,7 +2,7 @@
 
 Summary:            Smart PC Control
 Name:               smart-pc-control
-Version:            0.1.2
+Version:            0.1.3
 Release:            1%{?dist}
 License:            Apache v2
 # Sources can be obtained by
@@ -49,6 +49,14 @@ install -D -m644 src/power_control/config/smart-pc-control-power.service %{build
 %endif
 
 %changelog
+* Fri Dec 23 2022 Otavio R. Piske <angusyoung@gmail.com> 0.1.3-1
+- Added missing package for building (angusyoung@gmail.com)
+- Remove the outdated debug setting (angusyoung@gmail.com)
+- Formatting fixes in the packing spec (angusyoung@gmail.com)
+- Fixed incorrect srcname in packaging (angusyoung@gmail.com)
+- Updated cargo lock (angusyoung@gmail.com)
+- Updated cargo lock (angusyoung@gmail.com)
+
 * Thu Dec 22 2022 Otavio R. Piske <angusyoung@gmail.com> 0.1.2-1
 - Do not turn off if running stateless (angusyoung@gmail.com)
 
