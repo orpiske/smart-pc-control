@@ -32,14 +32,14 @@ A tool for controlling your PC via homekit2mqtt
 
 %install
 install -D -m755 target/release/smart-pc-control %{buildroot}/%{_exec_prefix}/bin/smart-pc-control
-install -D -m644 src/power_control/config/smart-pc-control-power.sh %{buildroot}/%{_sysconfdir}/sysconfig/smart-pc-control-power.sh
+install -D -m644 src/power_control/config/smart-pc-control-power.sh %{buildroot}/%{_sysconfdir}/sysconfig/smart-pc-control-power.sh.set-me-up
 install -D -m644 src/power_control/config/smart-pc-control-power.service %{buildroot}/%{_prefix}/lib/systemd/system/smart-pc-control-power.service
 
 %files
 %doc README.md
 %license LICENSE
 %{_exec_prefix}/bin/smart-pc-control
-%{_sysconfdir}/sysconfig/smart-pc-control-power.sh
+%{_sysconfdir}/sysconfig/smart-pc-control-power.sh.set-me-up
 %{_prefix}/lib/systemd/system/smart-pc-control-power.service
 
 
