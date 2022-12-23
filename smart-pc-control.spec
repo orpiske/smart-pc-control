@@ -40,7 +40,7 @@ install -D -m644 src/power_control/config/smart-pc-control-power.service %{build
 %license LICENSE
 %{_exec_prefix}/bin/smart-pc-control
 %{_sysconfdir}/sysconfig/smart-pc-control-power.sh
-%{_prefix}/lib/systemd/smart-pc-control-power.service
+%{_prefix}/lib/systemd/system/smart-pc-control-power.service
 
 
 %if %{with check}
