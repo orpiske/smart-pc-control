@@ -90,9 +90,11 @@ pub fn handle_incoming_message(msg: &Option<Message>) {
                 dbg!(std::format!("Received a request with data: {v}"));
                 let data: String = v;
                 dbg!(std::format!("Received a parseable response as string: {data}"));
-                if data.eq("true") && stateless {
-                    println!("Turning on the remote computer");
-                    turn_on();
+                if data.eq("true") {
+                    if stateless {
+                        println!("Turning on the remote computer");
+                        turn_on();
+                    }
                 } else if data.eq("false") && !stateless {
                     turn_off();
                     println!("Shutting down the computer ...");
