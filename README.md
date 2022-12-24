@@ -65,6 +65,8 @@ I wrote about these steps in [my blog](https://www.orpiske.net/2019/11/controlli
 
 Then, configure the daemon on the host you want to shut down (the one that will be turned off when you flip the switch on the iPhone/iPad). To do so edit the file `/etc/sysconfig/smart-pc-control-power.sh`.
 
+*Note*: you can use the template file installed at `/etc/sysconfig/smart-pc-control-power.sh.set-me-up` and then save it as `/etc/sysconfig/smart-pc-control-power.sh`.
+
 For this host you only need to set the address of the MQTT broker:
 
 ```shell
