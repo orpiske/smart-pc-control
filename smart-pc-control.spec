@@ -48,6 +48,11 @@ install -D -m644 src/power_control/config/smart-pc-control-power.service %{build
 %cargo_test -a
 %endif
 
+
+%post
+systemctl daemon-reload
+
+
 %changelog
 * Fri Dec 23 2022 Otavio R. Piske <angusyoung@gmail.com> 0.1.5-1
 - Avoid overwriting the configuration files (angusyoung@gmail.com)
