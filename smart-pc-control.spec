@@ -52,6 +52,19 @@ install -D -m644 src/power_control/config/smart-pc-control-power.service %{build
 %post
 systemctl daemon-reload
 
+%preun
+if [ $1 == 0 ]; then #uninstall
+  systemctl unmask smart-pc-control-power.service
+  systemctl stop smart-pc-control-power.service
+  systemctl disable smart-pc-control-power.service
+fi
+
+%postun
+if [ $1 == 0 ]; then #uninstall
+  systemctl daemon-reload
+  systemctl reset-failed
+fi
+
 
 %changelog
 * Fri Dec 23 2022 Otavio R. Piske <angusyoung@gmail.com> 0.1.5-1
