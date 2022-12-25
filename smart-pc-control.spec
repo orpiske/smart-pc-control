@@ -2,7 +2,7 @@
 
 Summary:            Smart PC Control
 Name:               smart-pc-control
-Version:            0.1.6
+Version:            0.1.7
 Release:            1%{?dist}
 License:            Apache v2
 # Sources can be obtained by
@@ -76,6 +76,12 @@ fi
 
 
 %changelog
+* Sun Dec 25 2022 Otavio R. Piske <angusyoung@gmail.com> 0.1.7-1
+- Simplify setting a client ID for each client (angusyoung@gmail.com)
+- Version bump on Cargo lock (angusyoung@gmail.com)
+- Fix mismatch between state/status topics and ensure proper shutdown
+  (angusyoung@gmail.com)
+
 * Sun Dec 25 2022 Otavio R. Piske <angusyoung@gmail.com> 0.1.6-1
 - Adjust missing packages on Centos/EL8/9 (angusyoung@gmail.com)
 - Adjust spec for missing packages on Centos/EL8/9 (angusyoung@gmail.com)
