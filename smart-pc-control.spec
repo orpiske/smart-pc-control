@@ -15,12 +15,7 @@ BuildRequires:      cmake
 BuildRequires:      gcc
 BuildRequires:      gcc-c++
 BuildRequires:      openssl-devel
-%if 0%{?fedora}
 BuildRequires:      rust-packaging
-%else
-BuildRequires:      rust
-BuildRequires:      cargo
-%endif
 
 
 %description
@@ -32,11 +27,7 @@ A tool for controlling your PC via homekit2mqtt
 
 
 %build
-%if 0%{?fedora}
 %cargo_build -a
-%else
-cargo build --release
-%endif
 
 
 %install
