@@ -19,6 +19,7 @@ BuildRequires:      openssl-devel
 BuildRequires:      rust-packaging
 %else
 BuildRequires:      rust
+BuildRequires:      cargo
 %endif
 
 
