@@ -2,7 +2,7 @@
 
 Summary:            Smart PC Control
 Name:               smart-pc-control
-Version:            0.1.5
+Version:            0.1.6
 Release:            1%{?dist}
 License:            Apache v2
 # Sources can be obtained by
@@ -76,6 +76,17 @@ fi
 
 
 %changelog
+* Sun Dec 25 2022 Otavio R. Piske <angusyoung@gmail.com> 0.1.6-1
+- Adjust missing packages on Centos/EL8/9 (angusyoung@gmail.com)
+- Adjust spec for missing packages on Centos/EL8/9 (angusyoung@gmail.com)
+- Added a note about the configuration template (angusyoung@gmail.com)
+- Improve cleanup after uninstalling the service (angusyoung@gmail.com)
+- Execute daemon reload after install (angusyoung@gmail.com)
+- Prevent bogus warning when ignoring valid requests (angusyoung@gmail.com)
+- Prevent uninstall from removing/overwriting the configuration file
+  (angusyoung@gmail.com)
+- Updated cargo lock (angusyoung@gmail.com)
+
 * Fri Dec 23 2022 Otavio R. Piske <angusyoung@gmail.com> 0.1.5-1
 - Avoid overwriting the configuration files (angusyoung@gmail.com)
 - Only stateless hosts can turn on others (angusyoung@gmail.com)
