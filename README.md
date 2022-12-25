@@ -56,7 +56,7 @@ make build && sudo make install
 Configuration:
 ----
 
-First set up the infrastructure required to integrate with HomeKit: 
+First set up the infrastructure required to integrate with HomeKit:
 
 * A MQTT broker
 * Homekit2mqtt
@@ -70,10 +70,13 @@ Then, configure the daemon on the host you want to shut down (the one that will 
 For this host you only need to set the address of the MQTT broker:
 
 ```shell
-# Set the 
+# Set the
 MQTT_BROKER_URL=tcp://thyone:1883
 
 SMART_PC_CONTROL_ENVIRONMENT="production"
+
+# Use a unique ID for each client connecting
+SMART_PC_CONTROL_ID="smart-pc-control-stateful"
 
 # Uncomment for clients that don't store any state
 # SMART_PC_CONTROL_STATELESS="false"
@@ -82,13 +85,16 @@ SMART_PC_CONTROL_ENVIRONMENT="production"
 # SMART_PC_CONTROL_TARGET_MAC_ADDRESS="54:b2:03:09:10:d7"
 ```
 
-Then on the host that will send the magic packet for the wake-on-lan, configure the file like this: 
+Then on the host that will send the magic packet for the wake-on-lan, configure the file like this:
 
 ```shell
-# Set the 
+# Set the
 MQTT_BROKER_URL=tcp://thyone:1883
 
 SMART_PC_CONTROL_ENVIRONMENT="production"
+
+# Use a unique ID for each client connecting
+SMART_PC_CONTROL_ID="smart-pc-control-stateless"
 
 # Uncomment for clients that don't store any state
 SMART_PC_CONTROL_STATELESS="true"
