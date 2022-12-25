@@ -24,9 +24,13 @@ fn power_control() {
     let address = &args[2];
 
     let address = String::from(address);
-    let topic = "pc/nuc/status/on";
 
-    client::client::run_client_consumer(address, topic,
-                                        |topic,client| power_control::power_control::set_turned_on_state(topic, client),
+    let context = client::client::SmartContext {
+        status_topic: "pc/nuc/status/on",
+        state_topic: "pc/nuc/state/on",
+    };
+
+    client::client::run_client_consumer(address, &context,
+                                        |state_topic,client| power_control::power_control::set_turned_on_state(state_topic, client),
                                         |msg| power_control::power_control::handle_incoming_message(msg));
 }

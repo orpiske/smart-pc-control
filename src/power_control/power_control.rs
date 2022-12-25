@@ -80,31 +80,33 @@ pub fn set_turned_on_state(default_topic: &str, cli: &Client) -> paho_mqtt::Resu
     return Ok(());
 }
 
-pub fn handle_incoming_message(msg: &Option<Message>) {
+pub fn handle_incoming_message(msg: &Message) {
     let stateless = std::env::var("SMART_PC_CONTROL_STATELESS").unwrap_or(String::from("false"));
     let stateless: bool = stateless.parse().unwrap_or(false);
 
-    if let Some(msg) = msg {
-        match msg.payload_str().trim().parse() {
-            Ok(v) => {
-                dbg!(std::format!("Received a request with data: {v}"));
-                let data: String = v;
-                dbg!(std::format!("Received a parseable response as string: {data}"));
-                if data.eq("true") {
-                    if stateless {
-                        println!("Turning on the remote computer");
-                        turn_on();
-                    }
-                } else if data.eq("false") && !stateless {
+    match msg.payload_str().trim().parse() {
+        Ok(v) => {
+            dbg!(std::format!("Received a request with data: {v}"));
+            let data: String = v;
+            dbg!(std::format!("Received a parseable response as string: {data}"));
+            if data.eq("true") {
+                if stateless {
+                    println!("Turning on the remote computer");
+                    turn_on();
+                }
+            } else if data.eq("false") {
+                if !stateless {
                     turn_off();
                     println!("Shutting down the computer ...");
                 } else {
-                    eprintln!("Invalid request data");
+                    dbg!(std::format!("Received a shutdown request but the state is {stateless}"));
                 }
+            } else {
+                eprintln!("Invalid request data");
             }
-            Err(_) => {
-                println!("Failed to parse the response");
-            }
+        }
+        Err(_) => {
+            println!("Failed to parse the response");
         }
     }
 }
