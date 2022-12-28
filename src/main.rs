@@ -28,6 +28,7 @@ fn power_control() {
     let context = client::client::SmartContext {
         status_topic: power_control::power_control::STATUS_TOPIC,
         state_topic: power_control::power_control::STATE_TOPIC,
+        last_will: power_control::power_control::last_will_message(),
     };
 
     client::client::run_client_consumer(address, &context,

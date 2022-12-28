@@ -9,6 +9,7 @@ const QOS_AT_MOST_ONCE: i32 = mqtt::QOS_1;
 pub struct SmartContext<'a> {
     pub state_topic: &'a str,
     pub status_topic: &'a str,
+    pub last_will: Message,
 }
 
 fn clean_disconnect(cli: &Client) {
@@ -36,6 +37,7 @@ pub fn run_client_consumer<F, K>(address: String, context: &SmartContext, on_con
     let conn_opts = mqtt::ConnectOptionsBuilder::new()
         .keep_alive_interval(Duration::from_secs(5))
         .clean_session(true)
+        .will_message(context.last_will.clone())
         .finalize();
 
     match cli.connect(conn_opts) {

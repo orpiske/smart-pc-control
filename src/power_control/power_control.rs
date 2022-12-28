@@ -64,6 +64,13 @@ fn convert(mac_address: &mut [u8; 6], address: String) -> Result<String, &str> {
     Ok(String::from(""))
 }
 
+pub fn last_will_message() -> Message {
+    mqtt::MessageBuilder::new()
+        .topic(STATE_TOPIC)
+        .payload("false")
+        .finalize()
+}
+
 pub fn set_turned_on_state(default_topic: &str, cli: &Client) -> paho_mqtt::Result<()> {
     let stateless = std::env::var("SMART_PC_CONTROL_STATELESS").unwrap_or(String::from("false"));
     let stateless: bool = stateless.parse().unwrap_or(false);
@@ -98,8 +105,9 @@ pub fn handle_incoming_message(msg: &Message) {
                 }
             } else if data.eq("false") {
                 if !stateless {
-                    turn_off();
                     println!("Shutting down the computer ...");
+                    turn_off();
+
                 } else {
                     dbg!(std::format!("Received a shutdown request but the state is {stateless}"));
                 }
