@@ -769,7 +769,7 @@ checksum = "a507befe795404456341dfab10cef66ead4c041f62b8b11bbb92bffe5d0953e0"
 
 [[package]]
 name = "smart-pc-control"
-version = "0.1.6"
+version = "0.1.8"
 dependencies = [
  "paho-mqtt",
  "system_shutdown",
