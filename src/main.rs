@@ -26,8 +26,8 @@ fn power_control() {
     let address = String::from(address);
 
     let context = client::client::SmartContext {
-        status_topic: "pc/nuc/status/on",
-        state_topic: "pc/nuc/state/on",
+        status_topic: power_control::power_control::STATUS_TOPIC,
+        state_topic: power_control::power_control::STATE_TOPIC,
     };
 
     client::client::run_client_consumer(address, &context,

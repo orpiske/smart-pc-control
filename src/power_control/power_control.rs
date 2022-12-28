@@ -3,6 +3,8 @@ use paho_mqtt::{Client, Message};
 use wake_on_lan as wol;
 
 const QOS_AT_MOST_ONCE: i32 = mqtt::QOS_1;
+pub const STATE_TOPIC: &str = "pc/nuc/state/on";
+pub const STATUS_TOPIC: &str = "pc/nuc/status/on";
 
 use system_shutdown::shutdown;
 
