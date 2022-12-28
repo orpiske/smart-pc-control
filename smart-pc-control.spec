@@ -2,7 +2,7 @@
 
 Summary:            Smart PC Control
 Name:               smart-pc-control
-Version:            0.1.8
+Version:            0.1.9
 Release:            1%{?dist}
 License:            Apache v2
 # Sources can be obtained by
@@ -67,6 +67,12 @@ fi
 
 
 %changelog
+* Wed Dec 28 2022 Otavio R. Piske <angusyoung@gmail.com> 0.1.9-1
+- Updated cargo lock (angusyoung@gmail.com)
+- Send a last will message when disconnecting ungracefully
+  (angusyoung@gmail.com)
+- Cleanup state/status constants (angusyoung@gmail.com)
+
 * Sun Dec 25 2022 Otavio R. Piske <angusyoung@gmail.com> 0.1.8-1
 - Enable packaging only for Fedora and EL9 (packaging does not work on others)
   (angusyoung@gmail.com)
