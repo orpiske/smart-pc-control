@@ -1,4 +1,4 @@
-use std::{process, time, thread};
+use std::{process, thread};
 use std::time::Duration;
 
 use paho_mqtt as mqtt;
