@@ -2,7 +2,7 @@
 
 Summary:            Smart PC Control
 Name:               smart-pc-control
-Version:            0.1.9
+Version:            0.1.10
 Release:            1%{?dist}
 License:            Apache v2
 # Sources can be obtained by
@@ -67,6 +67,9 @@ fi
 
 
 %changelog
+* Sun Jan 15 2023 Otavio R. Piske <angusyoung@gmail.com> 0.1.10-1
+- Do retry connecting if initial connection fails (angusyoung@gmail.com)
+
 * Wed Dec 28 2022 Otavio R. Piske <angusyoung@gmail.com> 0.1.9-1
 - Updated cargo lock (angusyoung@gmail.com)
 - Send a last will message when disconnecting ungracefully
