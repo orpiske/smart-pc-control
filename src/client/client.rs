@@ -34,41 +34,46 @@ pub fn run_client_consumer<F, K>(address: String, context: &SmartContext, on_con
 
     let rx = cli.start_consuming();
 
-    let conn_opts = mqtt::ConnectOptionsBuilder::new()
-        .keep_alive_interval(Duration::from_secs(5))
-        .clean_session(true)
-        .will_message(context.last_will.clone())
-        .finalize();
+    loop {
+        let conn_opts = mqtt::ConnectOptionsBuilder::new()
+            .keep_alive_interval(Duration::from_secs(5))
+            .clean_session(true)
+            .will_message(context.last_will.clone())
+            .finalize();
 
-    match cli.connect(conn_opts) {
-        Ok(rsp) => {
-            if let Some(conn_rsp) = rsp.connect_response() {
-                println!(
-                    "Connected to: '{}' with MQTT version {}",
-                    conn_rsp.server_uri, conn_rsp.mqtt_version
-                );
+        match cli.connect(conn_opts) {
+            Ok(rsp) => {
+                if let Some(conn_rsp) = rsp.connect_response() {
+                    println!(
+                        "Connected to: '{}' with MQTT version {}",
+                        conn_rsp.server_uri, conn_rsp.mqtt_version
+                    );
 
-                if conn_rsp.session_present {
-                    println!("Client session is already present on broker");
-                } else {
-                    println!("Subscribing to {0}", context.state_topic);
-                    cli.subscribe(context.state_topic, QOS_AT_MOST_ONCE)
-                    .and_then(|rsp| {
-                        rsp.subscribe_response().ok_or(mqtt::Error::General("Unable to subscribe due to Bad MQTT response"))
-                    })
-                    .unwrap_or_else(|err| {
-                        println!("Unable to subscribe to topic: {:?}", err);
-                        clean_disconnect(&cli);
-                        process::exit(1);
-                    });
+                    if conn_rsp.session_present {
+                        println!("Client session is already present on broker");
+                    } else {
+                        println!("Subscribing to {0}", context.state_topic);
+                        cli.subscribe(context.state_topic, QOS_AT_MOST_ONCE)
+                            .and_then(|rsp| {
+                                rsp.subscribe_response().ok_or(mqtt::Error::General("Unable to subscribe due to Bad MQTT response"))
+                            })
+                            .unwrap_or_else(|err| {
+                                println!("Unable to subscribe to topic: {:?}", err);
+                                clean_disconnect(&cli);
+                                process::exit(1);
+                            });
+                    }
                 }
+                break;
+            }
+            Err(e) => {
+                println!("Error connecting to the broker: {:?}", e);
+                thread::sleep(Duration::from_secs(5))
             }
         }
-        Err(e) => {
-            println!("Error connecting to the broker: {:?}", e);
-            process::exit(1);
-        }
     }
+
+
 
     dbg!("Connecting ...");
     if let Err(e) = on_connect(context.status_topic, &cli) {
