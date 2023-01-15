@@ -11,3 +11,8 @@ uninstall:
 	[[ -f /usr/bin/smart-pc-control ]] && rm -f /usr/bin/smart-pc-control
 	[[ -f /etc/sysconfig/smart-pc-control-power.sh.set-me-up ]] && rm -f /etc/sysconfig/smart-pc-control-power.sh.set-me-up
 	[[ -f /usr/lib/systemd/system/smart-pc-control-power.service ]] && rm -f /usr/lib/systemd/system/smart-pc-control-power.service
+
+
+rpm-tag:
+	tito tag
+	git push --follow-tags origin
