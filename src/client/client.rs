@@ -117,31 +117,35 @@ pub fn run_client_producer<F, K>(address: String, topic: &str, on_connect: F, on
         process::exit(1);
     });
 
-    let conn_opts = mqtt::ConnectOptionsBuilder::new()
-        .keep_alive_interval(Duration::from_secs(20))
-        .clean_session(true)
-        .finalize();
 
-    match cli.connect(conn_opts) {
-        Ok(rsp) => {
-            if let Some(conn_rsp) = rsp.connect_response() {
-                println!(
-                    "Connected to: '{}' with MQTT version {}",
-                    conn_rsp.server_uri, conn_rsp.mqtt_version
-                );
+    loop {
+        let conn_opts = mqtt::ConnectOptionsBuilder::new()
+            .keep_alive_interval(Duration::from_secs(20))
+            .clean_session(true)
+            .finalize();
+
+        match cli.connect(conn_opts) {
+            Ok(rsp) => {
+                if let Some(conn_rsp) = rsp.connect_response() {
+                    println!(
+                        "Connected to: '{}' with MQTT version {}",
+                        conn_rsp.server_uri, conn_rsp.mqtt_version
+                    );
+                }
+                break;
+            }
+            Err(e) => {
+                println!("Error connecting to the broker: {:?}", e);
+                thread::sleep(Duration::from_secs(5))
             }
         }
-        Err(e) => {
+
+        if let Err(e) = on_connect(topic, &cli) {
             println!("Error connecting to the broker: {:?}", e);
+
+            clean_disconnect(&cli);
             process::exit(1);
         }
-    }
-
-    if let Err(e) = on_connect(topic, &cli) {
-        println!("Error connecting to the broker: {:?}", e);
-
-        clean_disconnect(&cli);
-        process::exit(1);
     }
 
     loop {
@@ -161,7 +165,7 @@ pub fn run_client_producer<F, K>(address: String, topic: &str, on_connect: F, on
             }
         }
 
-        std::thread::sleep(time::Duration::from_secs(30))
+        thread::sleep(Duration::from_secs(30))
     }
 }
 
