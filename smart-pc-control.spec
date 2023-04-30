@@ -2,7 +2,7 @@
 
 Summary:            Smart PC Control
 Name:               smart-pc-control
-Version:            0.1.13
+Version:            0.1.14
 Release:            1%{?dist}
 License:            Apache v2
 # Sources can be obtained by
@@ -67,6 +67,14 @@ fi
 
 
 %changelog
+* Sun Apr 30 2023 Otavio R. Piske <angusyoung@gmail.com> 0.1.14-1
+- Automatic commit of package [smart-pc-control] release [-1.1.13-1].
+  (angusyoung@gmail.com)
+- Automatic commit of package [smart-pc-control] release [0.1.12-1].
+  (angusyoung@gmail.com)
+- Adjusted the systemd service to always restart (angusyoung@gmail.com)
+- Updated cargo lock (angusyoung@gmail.com)
+
 * Sun Apr 30 2023 Otavio R. Piske <angusyoung@gmail.com> 0.1.13-1
 - 
 
