@@ -2,7 +2,7 @@
 
 Summary:            Smart PC Control
 Name:               smart-pc-control
-Version:            0.1.11
+Version:            0.1.12
 Release:            1%{?dist}
 License:            Apache v2
 # Sources can be obtained by
@@ -67,6 +67,9 @@ fi
 
 
 %changelog
+* Sun Apr 30 2023 Otavio R. Piske <angusyoung@gmail.com> 0.1.12-1
+- Updated service unit 
+
 * Sun Jan 15 2023 Otavio R. Piske <angusyoung@gmail.com> 0.1.11-1
 - Remove the unused producer client (angusyoung@gmail.com)
 - Do retry connecting the consumer if initial connection fails
