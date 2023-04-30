@@ -7,7 +7,7 @@ Type=exec
 EnvironmentFile=-/etc/sysconfig/smart-pc-control-power.sh
 ExecStart=/usr/bin/smart-pc-control power $MQTT_BROKER_URL
 PrivateTmp=false
-Restart=on-failure
+Restart=Always
 
 [Install]
 WantedBy=multi-user.target
